@@ -47,7 +47,6 @@ public class PhysicsProjectile : MonoBehaviour
     private void Projectile()
     {
         float currentValue = (Mathf.InverseLerp(0, 360, angle) * 6.35f) + 44;
-        Debug.Log(currentValue);
         horizontalVelocity = initialVelocity * Mathf.Cos(currentValue);
         verticalVelocity = initialVelocity * Mathf.Sin(currentValue);
 
