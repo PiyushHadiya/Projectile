@@ -73,14 +73,13 @@ public class StairHandler : MonoBehaviour
         }
         yield return new WaitForSeconds(0.8f);
         StartCoroutine(MoveForward());
+        StartCoroutine(CameraZoomIn());
     }
     IEnumerator PlayerTransition()
     {
         bool isTransition = true;
         float playerOffset = (stairCount) * playerYOffset;
         Vector3 winTarget = startPosition + new Vector3(0, playerOffset, 0);
-
-        playerTransform.parent = transform;
 
         while (isTransition)
         {
@@ -151,16 +150,20 @@ public class StairHandler : MonoBehaviour
 
     IEnumerator MoveForward()
     {
-        StartCoroutine(CameraZoomIn());
         bool isMoveForward = true;
         float offset = 0;
 
         while (isMoveForward)
         {
-            Vector3 currentPosition = transform.position;
+            Vector3 currentPosition = transform.localPosition;
             currentPosition.z += forwardSpeed * Time.deltaTime;
-            currentPosition.x = playerTransform.localPosition.x;
-            transform.position = currentPosition;
+
+            Vector3 playerPos = playerTransform.position;
+            playerPos.z = currentPosition.z;
+            playerTransform.position = playerPos;
+
+            currentPosition.x = playerTransform.position.x;
+            transform.localPosition = currentPosition;
 
             if (transform.position.z >= startPosition.z + offset)
             {
