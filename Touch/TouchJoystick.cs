@@ -16,13 +16,24 @@ public class TouchJoystick : MonoBehaviour
     private float MouseY;
     private void Update()
     {
+        //if (Input.touchCount > 0)
+        //    TouchControl();
+
+        //MouseX += direction.x * MouseSensitivity * Time.deltaTime;
+        //MouseY -= direction.y * MouseSensitivity * Time.deltaTime;
+
+        //target.eulerAngles = new Vector3(MouseY, MouseX, 0);
+        
+        // Optimized
         if (Input.touchCount > 0)
-            TouchControl();
+        {
+            yaw = speedH * Input.GetTouch(0).deltaPosition.x;
+            pitch = speedV * Input.GetTouch(0).deltaPosition.y;
 
-        MouseX += direction.x * MouseSensitivity * Time.deltaTime;
-        MouseY -= direction.y * MouseSensitivity * Time.deltaTime;
-
-        target.eulerAngles = new Vector3(MouseY, MouseX, 0);
+            Target.transform.eulerAngles -= new Vector3(0, -yaw, 0.0f) * Time.deltaTime;
+            transform.eulerAngles -= new Vector3(pitch, 0, 0.0f) * Time.deltaTime;
+            Rotater.instance.CameraScriptRotate();
+        }
     }
     private void TouchControl()
     {
